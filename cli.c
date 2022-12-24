@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int colemanLiau(int letters, int words, int sentences);
+int colemanLiau(int characters, int words, int sentenCes);
 
 int main(void)
 {
@@ -9,8 +9,11 @@ int main(void)
 	printf("Enter a text: ");
 	scanf("%[^\n]", text);
 
-	int totalLetters = 0;
+	int totalCharacters = 0;
 	int totalSentences = 0;
+
+	// the number of words in a text equals the number of spaces plus one
+	// so the variable starts with 1
 	int totalWords = 1;
 
 	const int textSize = strlen(text);
@@ -18,27 +21,37 @@ int main(void)
 	for (int i = 0; i < textSize; i++)
 	{
 
-		char letter = text[i];
+		const char character = text[i];
 
-		if (letter != ' ')
+		if (character != ' ')
 		{
-
-			int nLetter = (int)letter;
+			// convert character to ascii number
+			const int nCharacter = (int)character;
 
 			if (
-				!((nLetter >= 34 && nLetter <= 45) 
-				&& (nLetter >= 123 && nLetter <= 127) 
-				&& (nLetter >= 91 && nLetter <= 96) 
-				&& (nLetter >= 47 && nLetter <= 62)
-				&& (letter != '@')))
+				/*
+				* this algoritm will only count 
+				* letters, so, no special characters
+				* will be detected
+				*/
+
+				// " # $ % & ' ( ) * + ' -
+				!((nCharacter >= 34 && nCharacter <= 45) 
+				// { | }
+				&& (nCharacter >= 123 && nCharacter <= 127) 
+				// [ \ ] ^ _ `
+				&& (nCharacter >= 91 && nCharacter <= 96) 
+				// / 0 - 9 : ; < = >
+				&& (nCharacter >= 47 && nCharacter <= 62)
+				&& (character != '@')))
 			{
-				if (letter == '!' || letter == '.' || letter == '?')
+				if (character == '!' || character == '.' || character == '?')
 				{
 					totalSentences++;
 				}
 				else
 				{
-					totalLetters++;
+					totalCharacters++;
 				}
 			}
 		}
@@ -48,11 +61,11 @@ int main(void)
 		}
 	}
 
-	printf("\nTotal letters: %i\n", totalLetters);
+	printf("\nTotal characters: %i\n", totalCharacters);
 	printf("Total words: %i\n", totalWords);
-	printf("Total sentences %i\n: ", totalSentences);
+	printf("Total sentenCes %i\n: ", totalSentences);
 
-	const int CLI = colemanLiau(totalLetters, totalWords, totalSentences);
+	const int CLI = colemanLiau(totalCharacters, totalWords, totalSentences);
 
 	if (CLI < 16)
 	{
@@ -66,13 +79,18 @@ int main(void)
 	return 0;
 }
 
-int colemanLiau(int letters, int words, int sentences)
+
+// original CLI ---> CLI = 0.0588L - 0.296S - 15.8
+// where L = characters per 100 words
+//       S = sentences per 100 words
+int colemanLiau(int characters, int words, int sentenCes)
 {
 	int index;
 
-	float L = ((float)letters / words) * 100;
-	float S = ((float)sentences / words) * 100;
+	float L = ((float)characters / words) * 100;
+	float S = ((float)sentenCes / words) * 100;
 
+	// round to int
 	index = (int)(0.0588 * L - 0.296 * S - 15.8);
 
 	return index;
