@@ -26,7 +26,11 @@ int main(void)
 			int nLetter = (int)letter;
 
 			if (
-				!((nLetter >= 34 && nLetter <= 45) && (nLetter >= 123 && nLetter <= 127) && (nLetter >= 91 && nLetter <= 96) && (nLetter >= 47 && nLetter <= 62) && (letter != '@')))
+				!((nLetter >= 34 && nLetter <= 45) 
+				&& (nLetter >= 123 && nLetter <= 127) 
+				&& (nLetter >= 91 && nLetter <= 96) 
+				&& (nLetter >= 47 && nLetter <= 62)
+				&& (letter != '@')))
 			{
 				if (letter == '!' || letter == '.' || letter == '?')
 				{
